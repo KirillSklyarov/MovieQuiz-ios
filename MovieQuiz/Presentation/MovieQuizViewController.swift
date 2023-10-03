@@ -20,6 +20,16 @@ struct QuizResultsViewModel {
 
 final class MovieQuizViewController: UIViewController {
     
+    // MARK: - IB Outlets
+    @IBOutlet private var noButton: UIButton!
+    @IBOutlet private var yesButton: UIButton!
+    
+    @IBOutlet private var imageView: UIImageView!
+    
+    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private var counterLabel: UILabel!
+    
+    // MARK: - Private Properties
     private var correctAnswers = 0
     private var currentQuestionIndex = 0
     private let questions: [QuizQuestion] = [
@@ -75,10 +85,32 @@ final class MovieQuizViewController: UIViewController {
             correctAnswer: false),
     ]
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet private var textLabel: UILabel!
-    @IBOutlet private var counterLabel: UILabel!
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        let firstQuestion = questions[0]
+        let firstViewModel = convert(model: firstQuestion)
+        show(quiz: firstViewModel)
+    }
     
+    // MARK: - IB Actions
+    @IBAction func NoButton(_ sender: UIButton) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        if questions[currentQuestionIndex].correctAnswer == false {
+            showAnswerResult(isCorrect: true)
+        } else
+        { showAnswerResult(isCorrect: false)}
+    }
+    
+    @IBAction func YesButton(_ sender: UIButton) {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+        if questions[currentQuestionIndex].correctAnswer == true {
+            showAnswerResult(isCorrect: true)
+        } else {showAnswerResult(isCorrect: false)}
+    }
+    
+    // MARK: - Private Methods
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(named: model.image) ?? UIImage(),
@@ -91,6 +123,8 @@ final class MovieQuizViewController: UIViewController {
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
+        imageView.layer.borderWidth = 0.1
+        imageView.layer.cornerRadius = 20
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
     }
@@ -99,7 +133,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = 20
         if isCorrect {
             correctAnswers += 1 }
         
@@ -112,6 +146,8 @@ final class MovieQuizViewController: UIViewController {
         if currentQuestionIndex == questions.count - 1 {
             alert()
         } else {
+            noButton.isEnabled = true
+            yesButton.isEnabled = true
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             let viewModel = convert(model: nextQuestion)
@@ -130,6 +166,8 @@ final class MovieQuizViewController: UIViewController {
         { _ in
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
+            self.noButton.isEnabled = true
+            self.yesButton.isEnabled = true
             let firstQuestion = self.questions[self.currentQuestionIndex]
             let viewModel = self.convert(model: firstQuestion)
             self.show(quiz: viewModel)
@@ -140,26 +178,4 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func NoButton(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer == false {
-            showAnswerResult(isCorrect: true)
-        } else
-        { showAnswerResult(isCorrect: false)}
-    }
-    
-    @IBAction func YesButton(_ sender: UIButton) {
-        if questions[currentQuestionIndex].correctAnswer == true {
-            showAnswerResult(isCorrect: true)
-        } else {showAnswerResult(isCorrect: false)}
-    }
-    
-    
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        let firstQuestion = questions[0]
-        let firstViewModel = convert(model: firstQuestion)
-        show(quiz: firstViewModel)
-        
-        super.viewDidLoad()
-    }
 }
