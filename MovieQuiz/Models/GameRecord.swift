@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+struct GameRecord: Codable {
+    
+    let correct: Int
+    let total: Int
+    let date: Date
+    
+    static func bestRecord(currentGame: GameRecord, bestGame: GameRecord) -> Bool {
+        return  currentGame.correct > bestGame.correct
+    }
+}
+
+
