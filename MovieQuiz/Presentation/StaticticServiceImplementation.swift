@@ -7,25 +7,25 @@
 
 import Foundation
 
-final class StaticticServiceImplementation: StaticticService {    
-
+final class StaticticServiceImplementation: StaticticService {
+    
     private let userDefaults = UserDefaults.standard
     private let date = Date()
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
     private var correct: Int {
-         userDefaults.integer(forKey: Keys.correct.rawValue)}
+        userDefaults.integer(forKey: Keys.correct.rawValue)}
     private var total: Int {
-         userDefaults.integer(forKey: Keys.total.rawValue)}
+        userDefaults.integer(forKey: Keys.total.rawValue)}
     
     var gamesCount: Int {
         userDefaults.integer(forKey: Keys.gamesCount.rawValue)}
     
     var totalAccuracy: Double {
-            let corr = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
-            let total = Double(userDefaults.integer(forKey: Keys.total.rawValue))
-            return (corr / total) * 100}
+        let corr = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
+        let total = Double(userDefaults.integer(forKey: Keys.total.rawValue))
+        return (corr / total) * 100}
     
     var bestGame: GameRecord {
         get {

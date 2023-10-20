@@ -41,7 +41,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - IB Actions
-    @IBAction func NoButton(_ sender: UIButton) {
+    @IBAction func noButton(_ sender: UIButton) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
@@ -49,11 +49,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         if currentQuestion.correctAnswer == false {
             showAnswerResult(isCorrect: true)
-        } else
-        { showAnswerResult(isCorrect: false)}
+        } else {
+            showAnswerResult(isCorrect: false)
+        }
     }
     
-    @IBAction func YesButton(_ sender: UIButton) {
+    @IBAction func yesButton(_ sender: UIButton) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
         guard let currentQuestion = currentQuestion else {
@@ -61,7 +62,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         if currentQuestion.correctAnswer == true {
             showAnswerResult(isCorrect: true)
-        } else {showAnswerResult(isCorrect: false)}
+        } else {
+            showAnswerResult(isCorrect: false)
+        }
     }
     
     // MARK: - Private Methods
@@ -100,15 +103,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             gamesCountHere += 1
             statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let bestGameCorrect = statisticService.bestGame.correct,
+                bestGameTotal = statisticService.bestGame.total,
+                bestGameDate = statisticService.bestGame.date
             let model = AlertModel(title: "Этот раунд окончен!",
                                    message: """
-Ваш результат \(correctAnswers)/\(questionsAmount)
-Количество сыгранных квизов: \(gamesCountHere)
-Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) (\(statisticService.bestGame.date.dateTimeString))
-Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
-""",
+                                    Ваш результат \(correctAnswers)/\(questionsAmount)
+                                    Количество сыгранных квизов: \(gamesCountHere)
+                                    Рекорд: \(bestGameCorrect)/\(bestGameTotal) (\(bestGameDate))
+                                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                                    """,
                                    buttonText: "Сыграть еще раз",
-                                   completion: res)
+                                   completion: reset)
             let vc = AlertPresenter(controller: self)
             vc.show(quiz: model)
         }
@@ -120,7 +126,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
-    private func res() {
+    private func reset() {
         currentQuestionIndex = 0
         correctAnswers = 0
         noButton.isEnabled = true
