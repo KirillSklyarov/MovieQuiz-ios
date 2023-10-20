@@ -8,7 +8,7 @@
 import Foundation
 
 protocol StaticticService {
-    
+            
     func store(correct count: Int, total amount: Int)
     
     var totalAccuracy: Double {get}
