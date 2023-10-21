@@ -9,13 +9,16 @@ import Foundation
 import UIKit
 
 final class AlertPresenter: AlertPresenterProtocol {
-
+    
+    // MARK: - Private Properties
     private let controller: MovieQuizViewController
     
+    // MARK: - Initializers
     init(controller: MovieQuizViewController) {
         self.controller = controller
     }
     
+    // MARK: - Public Methods
     func show(quiz result: AlertModel) {
         let alert = UIAlertController(
             title: result.title,

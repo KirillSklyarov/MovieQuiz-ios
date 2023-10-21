@@ -8,11 +8,13 @@
 import Foundation
 
 protocol StaticticService {
-            
-    func store(correct count: Int, total amount: Int)
     
+    // MARK: - Public Propeties
     var totalAccuracy: Double {get}
     var gamesCount: Int {get}
     var bestGame: GameRecord {get}
+    
+    // MARK: - Public Methods
+    func store(correct count: Int, total amount: Int)
     
 }

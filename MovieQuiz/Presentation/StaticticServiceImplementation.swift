@@ -9,16 +9,7 @@ import Foundation
 
 final class StaticticServiceImplementation: StaticticService {
     
-    private let userDefaults = UserDefaults.standard
-    private let date = Date()
-    private enum Keys: String {
-        case correct, total, bestGame, gamesCount
-    }
-    private var correct: Int {
-        userDefaults.integer(forKey: Keys.correct.rawValue)}
-    private var total: Int {
-        userDefaults.integer(forKey: Keys.total.rawValue)}
-    
+    // MARK: - Public Properties
     var gamesCount: Int {
         userDefaults.integer(forKey: Keys.gamesCount.rawValue)}
     
@@ -45,6 +36,18 @@ final class StaticticServiceImplementation: StaticticService {
         }
     }
     
+    // MARK: - Private Properties
+    private let userDefaults = UserDefaults.standard
+    private let date = Date()
+    private enum Keys: String {
+        case correct, total, bestGame, gamesCount
+    }
+    private var correct: Int {
+        userDefaults.integer(forKey: Keys.correct.rawValue)}
+    private var total: Int {
+        userDefaults.integer(forKey: Keys.total.rawValue)}
+    
+    // MARK: - Public Methods
     func store(correct count: Int, total amount: Int) {
         userDefaults.set(correct + count, forKey: Keys.correct.rawValue)
         userDefaults.set(total + amount, forKey: Keys.total.rawValue)

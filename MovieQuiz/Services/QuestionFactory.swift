@@ -9,7 +9,10 @@ import Foundation
 
 class QuestionFactory: QuestionFactoryProtocol {
     
+    // MARK: - Public Properties
     weak var delegate: QuestionFactoryDelegate?
+    
+    // MARK: - Private Properties
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Dark Knight",
@@ -62,6 +65,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             correctAnswer: false),
     ]
     
+    // MARK: - Public Methods
     func requestNextQuestion() {
         guard let index = (0..<questions.count).randomElement() else {
             delegate?.didReceiveNextQuestion(question: nil)
