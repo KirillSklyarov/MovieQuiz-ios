@@ -23,9 +23,9 @@ final class StaticticServiceImplementation: StaticticService {
         userDefaults.integer(forKey: Keys.gamesCount.rawValue)}
     
     var totalAccuracy: Double {
-            let corr = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
-            let total = Double(userDefaults.integer(forKey: Keys.total.rawValue))
-            return (corr / total) * 100}
+        let corr = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
+        let total = Double(userDefaults.integer(forKey: Keys.total.rawValue))
+        return (corr / total) * 100}
     
     var bestGame: GameRecord {
         get {
@@ -51,8 +51,6 @@ final class StaticticServiceImplementation: StaticticService {
         let currentGame = GameRecord(correct: count, total: amount,  date: date)
         if GameRecord.bestRecord(currentGame: currentGame, bestGame: bestGame) {
             bestGame = currentGame
-
-
         }
     }
 }
