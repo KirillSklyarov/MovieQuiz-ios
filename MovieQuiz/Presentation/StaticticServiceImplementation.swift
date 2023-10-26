@@ -51,6 +51,8 @@ final class StaticticServiceImplementation: StaticticService {
         let currentGame = GameRecord(correct: count, total: amount,  date: date)
         if GameRecord.bestRecord(currentGame: currentGame, bestGame: bestGame) {
             bestGame = currentGame
+
+
         }
     }
 }
