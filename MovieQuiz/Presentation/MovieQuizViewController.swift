@@ -23,7 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol!
     private var gamesCountHere: Int = 0
     private var statisticService: StaticticService = StaticticServiceImplementation()
-   
+    
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -32,10 +32,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         statisticService = StaticticServiceImplementation()
         showLoadingIndicator()
         questionFactory.loadData()
-        
-//        questionFactory.delegate = self
-//        
-//        questionFactory.requestNextQuestion()
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -63,7 +59,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             showAnswerResult(isCorrect: false)
         }
     }
-   
+    
     
     @IBAction func yesButton(_ sender: UIButton) {
         noButton.isEnabled = false
@@ -78,6 +74,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
     }
     
+    // MARK: - Public Methods
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     // MARK: - Private Methods
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -86,15 +92,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             questionNumber: "\(currentQuestionIndex+1)/\(questionsAmount)"
         )
         return questionStep
-    }
-    
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
-        questionFactory.requestNextQuestion()
-    }
-    
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription)
     }
     
     private func show(quiz step: QuizStepViewModel) {
@@ -162,7 +159,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
-        //        hideLoadingIndicator()
         activityIndicator.isHidden = true
         let model = AlertModel(title: "Ошибка",
                                message: message,
@@ -176,12 +172,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         let vc = AlertPresenter(controller: self)
         vc.show(quiz: model)
-        
-//        AlertPresenter.show(self)
     }
-//        let errorAlert = UIAlertController(title: "Ошибка", message: "Упс, возникла проблема при загрузке", preferredStyle: .alert)
-//        let errorAlertAction = UIAlertAction(title: "Попробовать еще раз", style: .cancel)
-//        errorAlert.addAction(errorAlertAction)
-//        present(errorAlert, animated: true)
-    }
+}
 

@@ -33,61 +33,6 @@ class QuestionFactory: QuestionFactoryProtocol {
         }
     }
     
-    
-    //    weak var delegate: QuestionFactoryDelegate?
-    
-    //    private let questions: [QuizQuestion] = [
-    //        QuizQuestion(
-    //            image: "The Dark Knight",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "The Godfather-1",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "Kill Bill",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "The Avengers",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "Deadpool",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "The Green Knight",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: true),
-    //
-    //        QuizQuestion(
-    //            image: "Old",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: false),
-    //
-    //        QuizQuestion(
-    //            image: "The Ice Age Adventures of Buck Wild",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: false),
-    //
-    //        QuizQuestion(
-    //            image: "Tesla",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: false),
-    //
-    //        QuizQuestion(
-    //            image: "Vivarium",
-    //            text: "Рейтинг этого фильма больше чем 6?",
-    //            correctAnswer: false),
-    //    ]
-    
     func requestNextQuestion() {
         DispatchQueue.global().async {
             [weak self] in
@@ -98,7 +43,7 @@ class QuestionFactory: QuestionFactoryProtocol {
             var imageData = Data()
             
             do {
-                imageData = try Data(contentsOf: movie.imageURL)
+                imageData = try Data(contentsOf: movie.resizedImageURL)
             } catch {
                 print("Failure to load image")
             }
@@ -117,9 +62,6 @@ class QuestionFactory: QuestionFactoryProtocol {
                 guard let self = self else {return}
                 self.delegate?.didReceiveNextQuestion(question: question)
             }
-            
-            //        let question = questions[safe: index]
-            //        delegate?.didReceiveNextQuestion(question: question)
         }
     }
 }
