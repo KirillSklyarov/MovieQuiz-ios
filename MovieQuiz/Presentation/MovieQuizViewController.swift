@@ -53,11 +53,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        if currentQuestion.correctAnswer == false {
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
+        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
     
     
@@ -67,12 +63,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        if currentQuestion.correctAnswer == true {
-            showAnswerResult(isCorrect: true)
-        } else {
-            showAnswerResult(isCorrect: false)
-        }
+        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
+    
     
     // MARK: - Public Methods
     func didLoadDataFromServer() {
@@ -160,15 +153,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showNetworkError(message: String) {
         activityIndicator.isHidden = true
-        let model = AlertModel(title: "Ошибка",
-                               message: message,
-                               buttonText: "Попробовать еще раз") {
-            [weak self] in
-            guard let self = self else {return}
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            self.questionFactory.requestNextQuestion()
-        }
+        let model = AlertModel(
+                    title: "Ошибка",
+                    message: message,
+                    buttonText: "Попробовать еще раз"
+                ) { [weak self] in
+                    guard let self = self else {return}
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+                    self.questionFactory.requestNextQuestion()
+                }
         
         let vc = AlertPresenter(controller: self)
         vc.show(quiz: model)

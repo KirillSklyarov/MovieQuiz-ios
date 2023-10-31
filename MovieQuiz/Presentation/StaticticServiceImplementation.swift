@@ -11,9 +11,10 @@ final class StaticticServiceImplementation: StaticticService {
 
     private let userDefaults = UserDefaults.standard
     private let date = Date()
+    
     private enum Keys: String {
-        case correct, total, bestGame, gamesCount
-    }
+        case correct, total, bestGame, gamesCount}
+    
     private var correct: Int {
          userDefaults.integer(forKey: Keys.correct.rawValue)}
     private var total: Int {
