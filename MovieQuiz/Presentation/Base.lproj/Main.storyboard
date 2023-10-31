@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -83,7 +83,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="NoButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6iC-0y-spm"/>
+                                                    <action selector="noButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aph-hZ-nLy"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NTl-sh-nt4" userLabel="Yes Button">
@@ -100,7 +100,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="YesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0sJ-zc-fqQ"/>
+                                                    <action selector="yesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6GR-TL-zBJ"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -110,17 +110,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="nbh-Gi-uIx">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QSa-em-66R" secondAttribute="trailing" constant="20" id="1uZ-fG-v9J"/>
+                            <constraint firstItem="nbh-Gi-uIx" firstAttribute="centerX" secondItem="QSa-em-66R" secondAttribute="centerX" id="KBn-lp-0CQ"/>
                             <constraint firstItem="QSa-em-66R" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="MRE-vF-oBu"/>
                             <constraint firstItem="QSa-em-66R" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="RM3-8x-NfT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QSa-em-66R" secondAttribute="bottom" id="aMD-Ni-qM8"/>
+                            <constraint firstItem="nbh-Gi-uIx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ynX-xY-v0P"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="nbh-Gi-uIx" id="P82-8f-41K"/>
                         <outlet property="counterLabel" destination="rOb-eA-24N" id="ZYo-7x-kfn"/>
                         <outlet property="imageView" destination="4EM-yG-pkT" id="6MX-98-GR4"/>
                         <outlet property="noButton" destination="hCi-kS-A6R" id="LS4-jB-zbu"/>
