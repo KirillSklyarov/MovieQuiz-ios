@@ -17,12 +17,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Private Properties
     public var correctAnswers = 0
-    private var currentQuestionIndex = 0
-    private let questionsAmount: Int = 10
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol!
     private var gamesCountHere: Int = 0
     private var statisticService: StaticticService = StaticticServiceImplementation()
+    private let presenter = MovieQuizPresenter()
     
     
     // MARK: - Lifecycle
@@ -36,13 +35,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
+        showLoadingIndicator()
         guard let question = question else {
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
-        DispatchQueue.main.async { [weak self] in
+        let viewModel = presenter.convert(model: question)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.show(quiz: viewModel)
+            self?.activityIndicator.isHidden = true
         }
     }
     
@@ -78,14 +79,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Private Methods
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex+1)/\(questionsAmount)"
-        )
-        return questionStep
-    }
+  
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -114,32 +108,35 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let bgTotal = statisticService.bestGame.total
         let bgDate = statisticService.bestGame.date.dateTimeString
         
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             gamesCountHere += 1
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
             let model = AlertModel(title: "Этот раунд окончен!",
                                    message:
                                     """
-                                    Ваш результат \(correctAnswers)/\(questionsAmount)
+                                    Ваш результат \(correctAnswers)/\(presenter.questionsAmount)
                                     Количество сыгранных квизов: \(gamesCountHere)
                                     Рекорд: \(bgCorrect)/\(bgTotal) (\(bgDate))
                                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
                                     """
                                    ,
                                    buttonText: "Сыграть еще раз", completion: reset)
+            
             let vc = AlertPresenter(controller: self)
             vc.show(quiz: model)
         }
         else {
             noButton.isEnabled = true
             yesButton.isEnabled = true
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
+//            currentQuestionIndex += 1
             questionFactory.requestNextQuestion()
         }
     }
     
     private func reset() {
-        currentQuestionIndex = 0
+        presenter.resetQuestionIndex()
+//        currentQuestionIndex = 0
         correctAnswers = 0
         noButton.isEnabled = true
         yesButton.isEnabled = true
@@ -148,6 +145,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func showLoadingIndicator() {
         activityIndicator.isHidden = false
+        activityIndicator.color = .red
         activityIndicator.startAnimating()
     }
     
@@ -159,7 +157,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                     buttonText: "Попробовать еще раз"
                 ) { [weak self] in
                     guard let self = self else {return}
-                    self.currentQuestionIndex = 0
+                    self.presenter.resetQuestionIndex()
+//                    self.currentQuestionIndex = 0
                     self.correctAnswers = 0
                     self.questionFactory.requestNextQuestion()
                 }
