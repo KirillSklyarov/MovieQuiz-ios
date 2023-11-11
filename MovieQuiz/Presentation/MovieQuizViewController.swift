@@ -17,7 +17,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - Private Properties
     public var correctAnswers = 0
-    private var currentQuestion: QuizQuestion?
+//    private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol!
     private var gamesCountHere: Int = 0
     private var statisticService: StaticticService = StaticticServiceImplementation()
@@ -34,32 +34,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         questionFactory.loadData()
     }
     
-    // MARK: - QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        showLoadingIndicator()
-        guard let question = question else {
-            return
-        }
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.show(quiz: viewModel)
-            self?.activityIndicator.isHidden = true
-        }
-    }
+   
     
     // MARK: - IB Actions
     @IBAction func noButton(_ sender: UIButton) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
-        presenter.currentQuestion = currentQuestion
+//        presenter.currentQuestion = currentQuestion
         presenter.noButtonCLicked()
     }
     
     @IBAction func yesButton(_ sender: UIButton) {
         noButton.isEnabled = false
         yesButton.isEnabled = false
-        presenter.currentQuestion = currentQuestion
+//        presenter.currentQuestion = currentQuestion
         presenter.yesButtonClicked()
     }
     
@@ -67,6 +55,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true
         questionFactory.requestNextQuestion()
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        presenter.didReceiveNextQuestion(question: question)
     }
     
     func didFailToLoadData(with error: Error) {
@@ -89,7 +81,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Private Methods
   
     
-    private func show(quiz step: QuizStepViewModel) {
+    func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
         imageView.layer.borderWidth = 0.1
