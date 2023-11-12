@@ -29,7 +29,7 @@
 		73954D5F2AFD1D36005C7F0D /* MovieQuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73954D5E2AFD1D36005C7F0D /* MovieQuizUITests.swift */; };
 		73D186452AE160A200275F02 /* StaticticServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D186442AE160A200275F02 /* StaticticServiceProtocol.swift */; };
 		73D186472AE161BC00275F02 /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D186462AE161BC00275F02 /* GameRecord.swift */; };
-		73D186492AE16E3D00275F02 /* StaticticServiceImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D186482AE16E3D00275F02 /* StaticticServiceImplementation.swift */; };
+		73D186492AE16E3D00275F02 /* StaticticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D186482AE16E3D00275F02 /* StaticticService.swift */; };
 		AD1ABAB22831907B00B3E448 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB12831907B00B3E448 /* AppDelegate.swift */; };
 		AD1ABAB42831907B00B3E448 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */; };
 		AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */; };
@@ -99,7 +99,7 @@
 		73954D5E2AFD1D36005C7F0D /* MovieQuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizUITests.swift; sourceTree = "<group>"; };
 		73D186442AE160A200275F02 /* StaticticServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticServiceProtocol.swift; sourceTree = "<group>"; };
 		73D186462AE161BC00275F02 /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
-		73D186482AE16E3D00275F02 /* StaticticServiceImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticServiceImplementation.swift; sourceTree = "<group>"; };
+		73D186482AE16E3D00275F02 /* StaticticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticService.swift; sourceTree = "<group>"; };
 		AD1ABAAE2831907B00B3E448 /* MovieQuiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieQuiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD1ABAB12831907B00B3E448 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AD1ABAB32831907B00B3E448 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +171,7 @@
 				73D186442AE160A200275F02 /* StaticticServiceProtocol.swift */,
 				731913EB2AEBA9E2005DDE04 /* NetworkClient.swift */,
 				731913EF2AEBAD3F005DDE04 /* MoviesLoader.swift */,
+				73D186482AE16E3D00275F02 /* StaticticService.swift */,
 				73954D562AFD0382005C7F0D /* StubNetworkClient.swift */,
 			);
 			path = Services;
@@ -213,7 +214,6 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				735C49DD2AFF941C00FDDFE7 /* MovieQuizPresenter.swift */,
 				739201F62ADEE7380050CF18 /* AlertPresenter.swift */,
-				73D186482AE16E3D00275F02 /* StaticticServiceImplementation.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 			);
 			path = Presentation;
@@ -510,7 +510,7 @@
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				739201F12ADEC8270050CF18 /* QuestionFactoryProtocol.swift in Sources */,
 				739201F32ADECC790050CF18 /* QuestionFactoryDelegate.swift in Sources */,
-				73D186492AE16E3D00275F02 /* StaticticServiceImplementation.swift in Sources */,
+				73D186492AE16E3D00275F02 /* StaticticService.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController.swift in Sources */,
 				739201EB2ADEA8B90050CF18 /* QuizStepViewModel.swift in Sources */,
 				73954D572AFD0382005C7F0D /* StubNetworkClient.swift in Sources */,

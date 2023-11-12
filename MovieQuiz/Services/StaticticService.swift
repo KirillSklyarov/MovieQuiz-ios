@@ -21,7 +21,13 @@ final class StaticticServiceImplementation: StaticticService {
          userDefaults.integer(forKey: Keys.total.rawValue)}
     
     var gamesCount: Int {
-        userDefaults.integer(forKey: Keys.gamesCount.rawValue)}
+        get {
+            userDefaults.integer(forKey: Keys.gamesCount.rawValue)}
+        
+        set {
+            userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
+        }
+    }
     
     var totalAccuracy: Double {
         let corr = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
@@ -49,6 +55,7 @@ final class StaticticServiceImplementation: StaticticService {
     func store(correct count: Int, total amount: Int) {
         userDefaults.set(correct + count, forKey: Keys.correct.rawValue)
         userDefaults.set(total + amount, forKey: Keys.total.rawValue)
+        self.gamesCount += 1
         let currentGame = GameRecord(correct: count, total: amount,  date: date)
         if GameRecord.bestRecord(currentGame: currentGame, bestGame: bestGame) {
             bestGame = currentGame

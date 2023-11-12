@@ -7,16 +7,39 @@
 
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
+    
+    private var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewController?
+    private var statisticService: StaticticService!
+    
+
+    init(viewController: MovieQuizViewController) {
+        self.viewController = viewController
+        
+        statisticService = StaticticServiceImplementation()
+        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
+    
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicatior()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        let message = error.localizedDescription
+        viewController?.showNetworkError(message: message)
+    }
+    
     
     let questionsAmount: Int = 10
     var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
     var correctAnswers: Int = 0
-    private var statisticService: StaticticService = StaticticServiceImplementation()
     private var gamesCountHere: Int = 0
-    var questionFactory: QuestionFactoryProtocol!
     
     
     func isLastQuestion() -> Bool {
@@ -26,6 +49,7 @@ final class MovieQuizPresenter {
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
+        questionFactory?.requestNextQuestion()
     }
     
     func switchToNextQuestion() {
@@ -63,7 +87,6 @@ final class MovieQuizPresenter {
         let viewModel = convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.viewController?.show(quiz: viewModel)
-            self?.viewController?.activityIndicator.isHidden = true
         }
     }
     
@@ -85,5 +108,19 @@ final class MovieQuizPresenter {
     func didAnswer(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1 }
+    }
+    
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        let bgCorrect = statisticService.bestGame.correct
+        let bgTotal = statisticService.bestGame.total
+        let bgDate = statisticService.bestGame.date.dateTimeString
+        let message = """
+                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(statisticService.gamesCount)
+                Рекорд: \(bgCorrect)/\(bgTotal) (\(bgDate))
+                Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                """
+        return message
     }
 }
