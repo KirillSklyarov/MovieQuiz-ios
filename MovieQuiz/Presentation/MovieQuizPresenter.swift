@@ -23,8 +23,9 @@ final class MovieQuizPresenter {
         currentQuestionIndex == questionsAmount - 1
     }
     
-    func resetQuestionIndex() {
+    func restartGame() {
         currentQuestionIndex = 0
+        correctAnswers = 0
     }
     
     func switchToNextQuestion() {
@@ -81,37 +82,8 @@ final class MovieQuizPresenter {
         }
     }
     
-
+    func didAnswer(isCorrect: Bool) {
+        if isCorrect {
+            correctAnswers += 1 }
+    }
 }
-    
-    
-    
-//
-//    func showNextQuestionOrResults() {
-//        let bgCorrect = statisticService.bestGame.correct
-//        let bgTotal = statisticService.bestGame.total
-//        let bgDate = statisticService.bestGame.date.dateTimeString
-//        
-//        if isLastQuestion() {
-//            gamesCountHere += 1
-//            statisticService.store(correct: correctAnswers, total: questionsAmount)
-//            let model = AlertModel(title: "Этот раунд окончен!",
-//                                   message:
-//                                    """
-//                                    Ваш результат \(correctAnswers)/\(questionsAmount)
-//                                    Количество сыгранных квизов: \(gamesCountHere)
-//                                    Рекорд: \(bgCorrect)/\(bgTotal) (\(bgDate))
-//                                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
-//                                    """
-//                                   ,
-//                                   buttonText: "Сыграть еще раз", completion: viewController!.reset)
-//        }
-//        else {
-//            self.switchToNextQuestion()
-//            questionFactory.requestNextQuestion()
-//        }
-//    }
-
-
-
-

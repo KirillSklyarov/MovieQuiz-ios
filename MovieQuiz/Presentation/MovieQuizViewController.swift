@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Private Properties
-    public var correctAnswers = 0
+//    public var correctAnswers = 0
     private var gamesCountHere: Int = 0
     private let presenter = MovieQuizPresenter()
     private var statisticService: StaticticService = StaticticServiceImplementation()
@@ -67,12 +67,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 20
-        if isCorrect {
-            correctAnswers += 1 }
+        presenter.didAnswer(isCorrect: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            self.presenter.correctAnswers = self.correctAnswers
             self.presenter.questionFactory = self.questionFactory
             self.presenter.showNextQuestionOrResults()
         }
@@ -94,12 +92,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         if presenter.isLastQuestion() {
             gamesCountHere += 1
-            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
+            statisticService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
             let bgCorrect = statisticService.bestGame.correct
             let bgTotal = statisticService.bestGame.total
             let bgDate = statisticService.bestGame.date.dateTimeString
             message = """
-                    Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
+                    Ваш результат: \(presenter.correctAnswers)/\(presenter.questionsAmount)
                     Количество сыгранных квизов: \(gamesCountHere)
                     Рекорд: \(bgCorrect)/\(bgTotal) (\(bgDate))
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
@@ -116,8 +114,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func reset() {
-        presenter.resetQuestionIndex()
-        correctAnswers = 0
+        presenter.restartGame()
         noButton.isEnabled = true
         yesButton.isEnabled = true
         questionFactory?.requestNextQuestion()
@@ -137,8 +134,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             buttonText: "Попробовать еще раз"
         ) { [weak self] in
             guard let self = self else {return}
-            self.presenter.resetQuestionIndex()
-            self.correctAnswers = 0
+            self.presenter.restartGame()
             self.questionFactory?.requestNextQuestion()
         }
         
