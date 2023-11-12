@@ -10,9 +10,14 @@ import UIKit
 final class MovieQuizPresenter {
     
     let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
+    var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
+    var correctAnswers: Int = 0
+    private var statisticService: StaticticService = StaticticServiceImplementation()
+    private var gamesCountHere: Int = 0
+    var questionFactory: QuestionFactoryProtocol!
+    
     
     func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
@@ -41,11 +46,11 @@ final class MovieQuizPresenter {
         viewController?.showAnswerResult(isCorrect: currentQuestion.correctAnswer)
     }
     
-   func noButtonCLicked() {
+    func noButtonCLicked() {
         guard let currentQuestion = currentQuestion else {
             return
         }
-       viewController?.showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
+        viewController?.showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -60,4 +65,53 @@ final class MovieQuizPresenter {
             self?.viewController?.activityIndicator.isHidden = true
         }
     }
+    
+    func showNextQuestionOrResults() {
+        if self.isLastQuestion() {
+            let text = "Вы ответили на \(correctAnswers) из 10, попробуйте еще раз!"
+            
+            let viewModel = QuizResultsViewModel(
+                title: "Этот раунд окончен!",
+                text: text,
+                buttonText: "Сыграть ещё раз")
+            viewController?.show(quiz: viewModel)
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
+    }
+    
+
 }
+    
+    
+    
+//
+//    func showNextQuestionOrResults() {
+//        let bgCorrect = statisticService.bestGame.correct
+//        let bgTotal = statisticService.bestGame.total
+//        let bgDate = statisticService.bestGame.date.dateTimeString
+//        
+//        if isLastQuestion() {
+//            gamesCountHere += 1
+//            statisticService.store(correct: correctAnswers, total: questionsAmount)
+//            let model = AlertModel(title: "Этот раунд окончен!",
+//                                   message:
+//                                    """
+//                                    Ваш результат \(correctAnswers)/\(questionsAmount)
+//                                    Количество сыгранных квизов: \(gamesCountHere)
+//                                    Рекорд: \(bgCorrect)/\(bgTotal) (\(bgDate))
+//                                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+//                                    """
+//                                   ,
+//                                   buttonText: "Сыграть еще раз", completion: viewController!.reset)
+//        }
+//        else {
+//            self.switchToNextQuestion()
+//            questionFactory.requestNextQuestion()
+//        }
+//    }
+
+
+
+
