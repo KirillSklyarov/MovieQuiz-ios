@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     // MARK: - IB Outlets
     @IBOutlet var noButton: UIButton!
@@ -75,12 +75,12 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.startAnimating()
     }
     
-    func hideLoadingIndicatior() {
+    func hideLoadingIndicator() {
         activityIndicator.isHidden = true
     }
     
     func showNetworkError(message: String) {
-        hideLoadingIndicatior()
+        hideLoadingIndicator()
         let model = AlertModel(
             title: "Ошибка",
             message: message,

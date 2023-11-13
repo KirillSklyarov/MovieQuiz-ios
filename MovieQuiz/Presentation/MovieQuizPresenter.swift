@@ -19,8 +19,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var gamesCountHere: Int = 0
     private let questionsAmount: Int = 10
     
-    init(viewController: MovieQuizViewController) {
-        self.viewController = viewController
+    init(viewController: MovieQuizViewControllerProtocol) {
+        self.viewController = (viewController as? MovieQuizViewController)
         
         statisticService = StaticticServiceImplementation()
         
@@ -31,7 +31,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     // MARK: - QiestionFactoryDelegate
     func didLoadDataFromServer() {
-        viewController?.hideLoadingIndicatior()
+        viewController?.hideLoadingIndicator()
         questionFactory?.requestNextQuestion()
     }
     
