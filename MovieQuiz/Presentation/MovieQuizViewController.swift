@@ -3,8 +3,8 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     
     // MARK: - IB Outlets
-    @IBOutlet private var noButton: UIButton!
-    @IBOutlet private var yesButton: UIButton!
+    @IBOutlet var noButton: UIButton!
+    @IBOutlet var yesButton: UIButton!
     
     @IBOutlet private var imageView: UIImageView!
     
@@ -25,42 +25,21 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - IB Actions
     @IBAction func noButton(_ sender: UIButton) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
         presenter.noButtonCLicked()
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
     }
     
     @IBAction func yesButton(_ sender: UIButton) {
-        noButton.isEnabled = false
-        yesButton.isEnabled = false
         presenter.yesButtonClicked()
-        noButton.isEnabled = true
-        yesButton.isEnabled = true
     }
     
     // MARK: - Public Methods
-    
-    func showAnswerResult(isCorrect: Bool) {
+    func highlightImageBorder(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         imageView.layer.cornerRadius = 20
-        presenter.didAnswer(isCorrect: isCorrect)
+    }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else {return}
-            self.presenter.showNextQuestionOrResults()
-        }
-    }
-    
-    func hideLoadingIndicatior() {
-        activityIndicator.isHidden = true
-    }
-    
-    // MARK: - Private Methods
-    
     func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
         imageView.layer.borderColor = UIColor.ypBlack.cgColor
@@ -96,8 +75,12 @@ final class MovieQuizViewController: UIViewController {
         activityIndicator.startAnimating()
     }
     
-    func showNetworkError(message: String) {
+    func hideLoadingIndicatior() {
         activityIndicator.isHidden = true
+    }
+    
+    func showNetworkError(message: String) {
+        hideLoadingIndicatior()
         let model = AlertModel(
             title: "Ошибка",
             message: message,
