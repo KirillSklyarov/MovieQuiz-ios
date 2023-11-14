@@ -11,7 +11,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StaticticService!
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     
     private var currentQuestionIndex: Int = 0
     private var currentQuestion: QuizQuestion?
@@ -20,7 +20,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private let questionsAmount: Int = 10
     
     init(viewController: MovieQuizViewControllerProtocol) {
-        self.viewController = (viewController as? MovieQuizViewController)
+        self.viewController = viewController
         
         statisticService = StaticticServiceImplementation()
         
@@ -88,7 +88,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func noButtonCLicked() {
-        viewController?.noButton.isEnabled = true
         guard let currentQuestion = currentQuestion else {
             return
         }
@@ -113,15 +112,11 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     
     private func proccedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrect: isCorrect)
-        viewController?.noButton.isEnabled = false
-        viewController?.yesButton.isEnabled = false
 
         viewController?.highlightImageBorder(isCorrect: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {return}
-            self.viewController?.noButton.isEnabled = true
-            self.viewController?.yesButton.isEnabled = true
             self.proccedToNextQuestionOrResults()
         }
     }

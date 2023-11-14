@@ -70,7 +70,7 @@ final class MovieQuizUITests: XCTestCase {
         
         XCTAssertNotNil(alert)
         XCTAssertEqual(alert.label, "Этот раунд окончен!")
-        XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть еще раз")
+        XCTAssertEqual(alert.buttons.firstMatch.label, "Сыграть ещё раз")
     }
     
     func testNextRound() {

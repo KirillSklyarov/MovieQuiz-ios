@@ -8,7 +8,7 @@
 import XCTest
 
 struct ArithmeticOperations {
-    func Addiction(num1: Int, num2: Int, handler: @escaping(Int) -> Void) {
+    func addiction(num1: Int, num2: Int, handler: @escaping(Int) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             handler(num1 + num2)
         }
@@ -35,7 +35,7 @@ class MovieQuizTests: XCTestCase {
         let num1 = 1
         let num2 = 2
         let expectation = expectation(description: "Addiction function expectation")
-        let result = arithmeticOperations.Addiction(num1: num1, num2: num2) { result in
+        let result = arithmeticOperations.addiction(num1: num1, num2: num2) { result in
             XCTAssertEqual(result, 3)
             expectation.fulfill()
         }

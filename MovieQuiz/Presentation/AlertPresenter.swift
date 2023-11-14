@@ -26,7 +26,6 @@ final class AlertPresenter {
             style: .default) { _ in
                 result.completion()
             }
-                
         alert.addAction(alertAction)
         controller.present(alert, animated: true, completion: nil)
     }
