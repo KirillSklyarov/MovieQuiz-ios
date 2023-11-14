@@ -5,10 +5,9 @@
 //  Created by Kirill Sklyarov on 17.10.2023.
 //
 
-import Foundation
 import UIKit
 
-final class AlertPresenter: AlertPresenterProtocol {
+final class AlertPresenter {
 
     private let controller: MovieQuizViewController
     
@@ -16,7 +15,7 @@ final class AlertPresenter: AlertPresenterProtocol {
         self.controller = controller
     }
     
-    func show(quiz result: AlertModel) {
+    func show(result: AlertModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.message,
@@ -27,8 +26,7 @@ final class AlertPresenter: AlertPresenterProtocol {
             style: .default) { _ in
                 result.completion()
             }
-        
         alert.addAction(alertAction)
-        controller.present(alert, animated: true)
+        controller.present(alert, animated: true, completion: nil)
     }
 }
